@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mist.Co Official Store</title>
+  <link rel="icon" href="https://images.icon-icons.com/3767/PNG/512/bag_shopping_icon_231414.png">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top">
+  <div class="container">
+
+    <a class="navbar-brand fw-bold logo-text" href="/">
+      Mist.Co
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/men">Men</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/women">Women</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/collection">Collection</a>
+        </li>
+      </ul>
+
+      <div class="d-flex gap-3 align-items-center">
+
+  <!-- DARK MODE BUTTON -->
+  <button id="darkModeToggle" class="dark-toggle-btn">
+    <i class="bi bi-moon-stars-fill"></i>
+  </button>
+
+        <a href="/cart" class="icon-btn">
+          <i class="bi bi-bag"></i>
+        </a>
+
+        <% if(user){ %>
+
+          <a href="/dashboard" class="btn btn-light rounded-pill px-4">
+            <i class="bi bi-person-circle"></i>
+            <%= user.name %>
+          </a>
+
+        <% } else { %>
+
+          <a href="/login" class="btn btn-outline-light rounded-pill px-4">
+            Login
+          </a>
+
+        <% } %>
+
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero-section">
+
+  <div class="overlay"></div>
+
+  <div class="container hero-content">
+
+    <div class="row align-items-center min-vh-100">
+
+      <div class="col-lg-6">
+
+        <span class="badge bg-light text-dark px-3 py-2 mb-3 rounded-pill">
+          NEW COLLECTION 2026
+        </span>
+
+        <h1 class="hero-title">
+          Minimal Fashion
+          <br>
+          Modern Lifestyle
+        </h1>
+
+        <p class="hero-text">
+          Premium fashion inspired by modern streetwear and clean aesthetic.
+        </p>
+
+        <div class="d-flex gap-3 mt-4">
+
+          <a href="/collection" class="btn hero-btn">
+            Shop Now
+          </a>
+
+          <a href="/men" class="btn hero-btn">
+          Explore
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= FEATURE ================= -->
+
+<section class="py-5 feature-section">
+
+  <div class="container">
+
+    <div class="row text-center">
+
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <i class="bi bi-truck feature-icon"></i>
+          <h5>Fast Delivery</h5>
+          <p>Worldwide premium shipping.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <i class="bi bi-shield-check feature-icon"></i>
+          <h5>Secure Payment</h5>
+          <p>100% secure transaction system.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <i class="bi bi-stars feature-icon"></i>
+          <h5>Premium Quality</h5>
+          <p>High quality selected materials.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= PRODUCTS ================= -->
+
+<section class="product-section">
+
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+
+      <div>
+        <h2 class="section-title">Trending Products</h2>
+        <p class="section-subtitle">
+          Most popular products this week.
+        </p>
+      </div>
+
+      <a href="/collection" class="btn btn-dark rounded-pill px-4">
+        View All
+      </a>
+
+    </div>
+
+    <div class="row">
+
+      <% products.forEach(product => { %>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+
+        <div class="product-card">
+
+          <div class="product-image-wrapper">
+
+            <img src="<%= product.image %>" class="product-image">
+
+            <div class="product-overlay">
+
+              <a href="/product/<%= product.id %>" class="btn btn-light rounded-pill">
+                View Product
+              </a>
+
+            </div>
+
+          </div>
+
+          <div class="product-info">
+
+            <h5><%= product.name %></h5>
+
+            <p class="product-price">
+              Rp <%= product.price.toLocaleString() %>
+            </p>
+
+            <div class="d-flex justify-content-between align-items-center">
+
+              <span class="badge bg-dark">
+                <%= product.gender %>
+              </span>
+
+              <a href="/cart/add/<%= product.id %>" class="cart-btn">
+                <i class="bi bi-bag-plus"></i>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <% }) %>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= BANNER ================= -->
+
+<section class="banner-section">
+
+  <div class="container">
+
+    <div class="banner-box">
+
+      <div class="row align-items-center">
+
+        <div class="col-lg-6">
+
+          <h2 class="banner-title">
+            Summer Collection 2026
+          </h2>
+
+          <p class="banner-text">
+            Discover premium modern outfit with clean aesthetic and minimalist style.
+          </p>
+
+          <a href="/collection" class="btn btn-light rounded-pill px-4">
+            Explore Collection
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-4 mb-4">
+
+        <h3 class="footer-logo">FASHION.</h3>
+
+        <p>
+          Modern ecommerce fashion website with premium UI.
+        </p>
+
+      </div>
+
+      <div class="col-lg-4 mb-4">
+
+        <h5>Navigation</h5>
+
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/men">Men</a></li>
+          <li><a href="/women">Women</a></li>
+          <li><a href="/collection">Collection</a></li>
+        </ul>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <h5>Follow Us</h5>
+
+        <div class="social-links">
+
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <hr class="border-secondary">
+
+    <div class="text-center">
+      © 2026 Fashion Store — Premium Ecommerce
+    </div>
+
+  </div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+const toggleBtn = document.getElementById('darkModeToggle');
+
+if(localStorage.getItem('darkMode') === 'enabled'){
+    document.body.classList.add('dark-mode');
+}
+
+toggleBtn.addEventListener('click', () => {
+
+    document.body.classList.toggle('dark-mode');
+
+    if(document.body.classList.contains('dark-mode')){
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        localStorage.setItem('darkMode', 'disabled');
+    }
+
+});
+
+</script>
+</body>
+</html>
