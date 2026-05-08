@@ -246,4 +246,11 @@ app.get('/cart/add/:id', (req, res) => {
 
     
 });
+db.connect((err) => {
+  if (err) {
+    console.log("❌ DB ERROR:", err);
+  } else {
+    console.log("✅ MySQL CONNECTED");
+  }
+});
 
