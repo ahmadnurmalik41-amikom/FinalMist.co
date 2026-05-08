@@ -23,18 +23,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT
 });
 
 db.connect((err) => {
     if (err) {
-        console.log(err);
+        console.log("❌ DB ERROR:", err);
     } else {
-        console.log('Database Connected');
+        console.log("✅ MySQL CONNECTED");
     }
 });
 
@@ -133,124 +133,8 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-app.listen(3000, () => {
-    console.log('Server running on http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
-
-// ====================
-// CART SIDEBAR
-// ====================
-
-let cart = [];
-
-function toggleCart(){
-    document.getElementById('cartSidebar')
-        .classList.toggle('active');
-
-    document.getElementById('cartOverlay')
-        .classList.toggle('active');
-}
-
-// ADD TO CART
-function addToCart(name, price, image){
-
-    cart.push({
-        name,
-        price,
-        image
-    });
-
-    updateCart();
-}
-
-// UPDATE CART
-function updateCart(){
-
-    const cartItems =
-        document.getElementById('cart-items');
-
-    const cartCount =
-        document.getElementById('cart-count');
-
-    const cartTotal =
-        document.getElementById('cart-total');
-
-    cartItems.innerHTML = '';
-
-    let total = 0;
-
-    cart.forEach(item => {
-
-        total += item.price;
-
-        cartItems.innerHTML += `
-            <div class="cart-item">
-
-                <img src="${item.image}">
-
-                <div class="cart-item-info">
-                    <h4>${item.name}</h4>
-                    <p>$${item.price}</p>
-                </div>
-
-            </div>
-        `;
-    });
-
-    cartCount.innerText = cart.length;
-    cartTotal.innerText = total;
-
-    if(cart.length === 0){
-        cartItems.innerHTML =
-        `<p class="empty-cart">
-            Cart is empty
-        </p>`;
-    }
-}
-
-// CART PAGE
-app.get('/cart', (req, res) => {
-
-    if (!req.session.cart) {
-        req.session.cart = [];
-    }
-
-    res.render('cart', {
-        cart: req.session.cart,
-        user: req.session.user
-    });
-
-});
-// ADD TO CART
-app.get('/cart/add/:id', (req, res) => {
-
-    const productId = req.params.id;
-
-    db.query(
-        'SELECT * FROM products WHERE id = ?',
-        [productId],
-        (err, result) => {
-
-            if (err) throw err;
-
-            if (!req.session.cart) {
-                req.session.cart = [];
-            }
-
-            req.session.cart.push(result[0]);
-
-            res.redirect('/cart');
-        }
-    );
-
-
-    
-});
-db.connect((err) => {
-  if (err) {
-    console.log("❌ DB ERROR:", err);
-  } else {
-    console.log("✅ MySQL CONNECTED");
-  }
-});
-
